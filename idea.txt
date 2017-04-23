@@ -1,0 +1,37 @@
+Name: SmartLogger
+Description: Service for collecting and analyzing the logs, helps companies prioritize bugs they need to fix.
+
+
+
+Core of the idea:
+
+### Everytime error occurs in an application, the company loses money.
+### Companies need to know which errors make them lose the most money.
+
+# Programmer defines the type of logs that will be sent to SmartLogger. 
+# The single log which is sent to SmartLogger has following attributes:
+    a. MS (Monetary Score) - value that company potentially loses because of given error. !!! This is the gem of our service !!!
+    b. Description - Error description.
+    c. Meta - Additional key-value structure which can be used for storing more details about the error. 
+
+
+
+
+Service:
+
+# SmartLogger dashboard will have a list of all the logs collected so far from the given project.
+# SmartLogger keeps track of TMS (Total MS - Sum of MS's) for each type of error. 
+# SmartLogger uses TMS to suggest the prioritized list of bugs that a company needs to fix.
+
+
+
+
+Business:
+# There are multiple subscription plans which vary by the limit of logs that can be sent/stored/analyzed.
+
+
+
+
+Maybe?
+
+# SmartLogger automatically re-arranges the tasks in Asana/Trello/etc based on their TMS.
