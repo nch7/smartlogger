@@ -22,7 +22,7 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-        $channels = Channel::with('logs')->orderBy('tms', 'desc')->paginate(25);
+        $channels = $request->user()->channels()->with('logs')->orderBy('tms', 'desc')->paginate(25);
         return view('dashboard.index', ['channels' => $channels]);
     }
 }

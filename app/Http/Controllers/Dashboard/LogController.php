@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Log;
 use App\Channel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

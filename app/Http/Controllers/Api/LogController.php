@@ -34,7 +34,7 @@ class LogController extends Controller
 
         // We got the channel in one way or another, now let's add a log to it
         $log = Log::create([
-            'ms' => $request->get('ms'),
+            'ms' => intval($request->get('ms')),
             'title' => $request->get('title'),
             'meta' => $request->get('meta', []),
             'channel_name' => $channel->name

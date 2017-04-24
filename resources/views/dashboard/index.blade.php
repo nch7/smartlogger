@@ -16,6 +16,10 @@
         .panel .panel-heading > .pull-right {
             overflow: hidden;
         }
+
+        .channel .panel-heading{
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -38,9 +42,9 @@
                     </div>
                 </div>
             @endif
-            
+
             @foreach($channels as $channel) 
-                <div class="panel panel-default">
+                <div class="channel panel panel-default">
                     <div class="panel-heading clearfix">
                         <div class="pull-left">
                             <h4>
@@ -53,7 +57,7 @@
                             <label class="pull-left label label-success number">${{ $channel->calculateUSD() }}</label>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hidden">
                         <table class="table">
                             <thead>
                                 <th>Title</th>
@@ -78,6 +82,11 @@
                                         </td>
                                    </tr> 
                                 @endforeach
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <a class="btn btn-primary" href="{{ route('channel', $channel->_id) }}">View All</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -88,4 +97,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+    <script type="text/javascript">
+        $('.channel .panel-heading').click(function() {
+            $(this).parent().find(".panel-body").toggleClass("hidden")
+        });
+    </script>
 @endsection

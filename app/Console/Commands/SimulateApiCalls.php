@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Curl;
+use App\Log;
+use App\Channel;
 use Config;
 use Illuminate\Console\Command;
 
@@ -13,7 +15,7 @@ class SimulateApiCalls extends Command
      *
      * @var string
      */
-    protected $signature = 'test:run';
+    protected $signature = 'test:run {--fast} {--sync}';
 
     /**
      * The console command description.
@@ -32,13 +34,25 @@ class SimulateApiCalls extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
+    public function sync() {
+        $channels = Channel::all();
+
+        foreach ($channels as $channel) {
+            $channel->tms = $channel->logs()->sum('ms');
+            $channel->save();
+        }
+    }
+
     public function handle()
     {
+
+        $fast = $this->option('fast');
+        $sync = $this->option('sync');
+
+        if($sync) {
+            $this->sync();
+            return;
+        }
 
         $this->info("Starting to send fake traffic!");
 
@@ -82,11 +96,33 @@ class SimulateApiCalls extends Command
             $title = array_rand($map[$channel]);
             $ms = $map[$channel][$title];
             
-            $curl->post(Config::get('app.url').'/api/logs/new', array(
-                "channel" => $channel,
-                "title" => $title,
-                "ms" => $ms
-            ));
+            if($fast) {
+                
+                Log::create([
+                    "channel_name" => $channel,
+                    "title" => $title,
+                    "ms" => $ms,
+                    "created_at" => date("Y-m-d H:i:s", rand(time(), time()-60*60*24*7)),
+                    "meta" => [
+                        "foo" => "bar",
+                        "id" => rand(1,100),
+                        "page" => rand(200,3000),
+                    ]
+                ]);
+
+            } else {
+                $curl->post(Config::get('app.url').'/api/logs/new', array(
+                    "channel" => $channel,
+                    "title" => $title,
+                    "ms" => $ms,
+                    "meta" => [
+                        "foo" => "bar",
+                        "id" => rand(1,100),
+                        "page" => rand(200,3000),
+                    ],
+                    "token" => "NIkm6rTpuhvnFr2Wf7J08PObb9YJjex9Z1JXR9rT8Jjod9KaS4cDI6FU0UR86YI1"
+                ));
+            }
 
             $this->info($channel." - ".$title." - ".$ms);
 

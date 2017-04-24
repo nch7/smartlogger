@@ -32,8 +32,12 @@ class Channel extends Eloquent {
         return $this->hasMany('App\Log', 'channel_name', 'name')->orderBy('created_at', 'desc')->take(5);     
     }
     
-    public function calculateUSD() {
-        return number_format($this->tms / Auth::user()->ms_usd, 2);
+    public function calculateUSD($tms = false) {
+        if($tms === false) {
+            $tms = $this->tms; 
+        }
+
+        return number_format($tms / Auth::user()->ms_usd, 2);
     }
 
 }

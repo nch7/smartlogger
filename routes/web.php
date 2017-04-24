@@ -29,6 +29,7 @@ Route::group(['namespace' => 'Auth'], function() {
 Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware'=>'auth'], function() {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/logs/{id}', 'LogController@view')->name('log');
+    Route::get('/channel/{id}', 'ChannelController@view')->name('channel');
     Route::get('/settings', 'SettingsController@index')->name('settings');
     Route::get('/settings/refresh', 'SettingsController@refresh')->name('settings.token.refresh');
     Route::post('/settings/update', 'SettingsController@update')->name('settings.update');

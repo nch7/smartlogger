@@ -16,7 +16,7 @@ class Log extends Eloquent {
      */
 
     protected $fillable = [
-        'title', 'channel_name', 'ms', 'meta'
+        'title', 'channel_name', 'ms', 'meta', 'created_at'
     ];
 
     public function channel() {
